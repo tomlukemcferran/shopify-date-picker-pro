@@ -2,5 +2,6 @@
 # Add the block to Product (or Cart) section in theme editor.
 
 api_version = "2024-10"
+uid = "8352cce0-21c6-cb17-2704-b238c1c825d22f53e950"
 type = "theme_app_extension"
 name = "Delivery Date Pro"

@@ -1,11 +1,14 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateTable
 CREATE TABLE "Session" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "shop" TEXT NOT NULL,
     "state" TEXT NOT NULL,
     "isOnline" BOOLEAN NOT NULL DEFAULT false,
     "scope" TEXT,
-    "expires" DATETIME,
+    "expires" TIMESTAMP(3),
     "accessToken" TEXT NOT NULL,
     "userId" BIGINT,
     "firstName" TEXT,
@@ -16,12 +19,14 @@ CREATE TABLE "Session" (
     "collaborator" BOOLEAN DEFAULT false,
     "emailVerified" BOOLEAN DEFAULT false,
     "refreshToken" TEXT,
-    "refreshTokenExpires" DATETIME
+    "refreshTokenExpires" TIMESTAMP(3),
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "GlobalSettings" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "shop" TEXT NOT NULL,
     "defaultCutoffTime" TEXT NOT NULL DEFAULT '14:00',
     "defaultDailyCapacity" INTEGER NOT NULL DEFAULT 50,
@@ -29,39 +34,62 @@ CREATE TABLE "GlobalSettings" (
     "enableWeekendDelivery" BOOLEAN NOT NULL DEFAULT false,
     "timezone" TEXT NOT NULL DEFAULT 'UTC',
     "showOnCartPage" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "GlobalSettings_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "BlackoutDate" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "shop" TEXT NOT NULL,
     "date" TEXT NOT NULL,
     "recurring" BOOLEAN NOT NULL DEFAULT false,
     "label" TEXT,
-    "createdAt" DATETIME NOT NULL,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BlackoutDate_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "DeliveryDayCount" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "shop" TEXT NOT NULL,
     "date" TEXT NOT NULL,
-    "count" INTEGER NOT NULL DEFAULT 0
+    "count" INTEGER NOT NULL DEFAULT 0,
+
+    CONSTRAINT "DeliveryDayCount_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ProductDeliveryCache" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "shop" TEXT NOT NULL,
     "productId" TEXT NOT NULL,
     "enabled" BOOLEAN,
     "cutoffHours" INTEGER,
     "maxDaysAhead" INTEGER,
     "dailyCapacity" INTEGER,
-    "updatedAt" DATETIME NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ProductDeliveryCache_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AddOn" (
+    "id" TEXT NOT NULL,
+    "shop" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
+    "variantId" TEXT NOT NULL,
+    "sortOrder" INTEGER NOT NULL DEFAULT 0,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "AddOn_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -84,3 +112,7 @@ CREATE INDEX "ProductDeliveryCache_shop_idx" ON "ProductDeliveryCache"("shop");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ProductDeliveryCache_shop_productId_key" ON "ProductDeliveryCache"("shop", "productId");
+
+-- CreateIndex
+CREATE INDEX "AddOn_shop_idx" ON "AddOn"("shop");
+
