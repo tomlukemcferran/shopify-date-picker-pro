@@ -187,6 +187,8 @@ Redeploy after changing env.
 
 **If you see “the URL must start with the protocol \`file:\`” or Prisma/SQLite errors:** the deployed code still has the old SQLite schema. Ensure (1) the repo connected in Vercel is the one with `provider = "postgresql"` in `prisma/schema.prisma`, (2) `DATABASE_URL` in Vercel is your **Neon (or other) Postgres** connection string (starts with `postgresql://`), and (3) trigger a new deploy from the latest commit.
 
+**If the app loads in the iframe but returns 401 Unauthorized** (e.g. URL has `?embedded=1&id_token=...&shop=...`): the session token (JWT) is validated with `SHOPIFY_API_SECRET`. Check (1) **Vercel → Settings → Environment variables**: `SHOPIFY_API_SECRET` must be the app’s **Client secret** from Partners (Apps → your app → Client credentials). (2) `SHOPIFY_API_KEY` must match the app’s Client ID. (3) `SHOPIFY_APP_URL` must be exactly your production URL (no trailing slash). After changing any of these, redeploy. You can hit `GET /env-check` on your deployment to see which of these env vars are set (values are never returned).
+
 ### 4. Shopify app URLs
 
 In Partners, set:
