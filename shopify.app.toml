@@ -2,7 +2,7 @@
 
 client_id = "73260891cb7403fc7b5ba62824b484a4"
 name = "delivery-date-pro"
-application_url = "https://shopify-delivery-picker-8ztfgx9fx-thomas-projects-0e0f05e6.vercel.app"
+application_url = "https://shopify-delivery-picker-4q74hpk64-thomas-projects-0e0f05e6.vercel.app"
 embedded = true
 
 [webhooks]
@@ -32,13 +32,13 @@ use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
-  "https://shopify-delivery-picker-8ztfgx9fx-thomas-projects-0e0f05e6.vercel.app/auth/callback",
-  "https://shopify-delivery-picker-8ztfgx9fx-thomas-projects-0e0f05e6.vercel.app/auth/shopify/callback",
-  "https://shopify-delivery-picker-8ztfgx9fx-thomas-projects-0e0f05e6.vercel.app/api/auth/callback"
+  "https://shopify-delivery-picker-4q74hpk64-thomas-projects-0e0f05e6.vercel.app/auth/callback",
+  "https://shopify-delivery-picker-4q74hpk64-thomas-projects-0e0f05e6.vercel.app/auth/shopify/callback",
+  "https://shopify-delivery-picker-4q74hpk64-thomas-projects-0e0f05e6.vercel.app/api/auth/callback"
 ]
 
 [app_proxy]
-url = "https://shopify-delivery-picker-8ztfgx9fx-thomas-projects-0e0f05e6.vercel.app/apps/delivery"
+url = "https://shopify-delivery-picker-4q74hpk64-thomas-projects-0e0f05e6.vercel.app/apps/delivery"
 prefix = "apps"
 subpath = "delivery"
 

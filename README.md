@@ -8,7 +8,7 @@ Production-ready Shopify custom app: product-specific delivery date picker with 
 - **Embedded admin** — Polaris UI
 - **Theme App Extension** — storefront block (product/cart)
 - **App Proxy** — `/apps/delivery/available-dates` and `/apps/delivery/validate-date`
-- **Prisma + SQLite** — local dev (use PostgreSQL for production if needed)
+- **Prisma + PostgreSQL** — production (Neon); use `DATABASE_URL` with Postgres URL on Vercel
 - **Metafields** — product-level settings: `delivery.enabled`, `delivery.cutoff_hours`, `delivery.max_days_ahead`, `delivery.daily_capacity`
 
 ## Core features
@@ -184,6 +184,8 @@ In Vercel → Project → Settings → Environment Variables, set:
 - `DATABASE_URL` (production PostgreSQL URL)
 
 Redeploy after changing env.
+
+**If you see “the URL must start with the protocol \`file:\`” or Prisma/SQLite errors:** the deployed code still has the old SQLite schema. Ensure (1) the repo connected in Vercel is the one with `provider = "postgresql"` in `prisma/schema.prisma`, (2) `DATABASE_URL` in Vercel is your **Neon (or other) Postgres** connection string (starts with `postgresql://`), and (3) trigger a new deploy from the latest commit.
 
 ### 4. Shopify app URLs
 
