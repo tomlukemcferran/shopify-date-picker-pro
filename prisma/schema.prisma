@@ -1,0 +1,108 @@
+// Delivery Date Pro - Prisma schema
+// SQLite for local dev; use postgres/mysql adapter for production if needed.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+// Local dev: set DATABASE_URL="file:./dev.sqlite" in .env
+
+// Session storage for Shopify auth (required by shopify-app-remix)
+model Session {
+  id                   String    @id
+  shop                 String
+  state                String
+  isOnline             Boolean   @default(false)
+  scope                String?
+  expires              DateTime?
+  accessToken          String
+  userId               BigInt?
+  firstName            String?
+  lastName             String?
+  email                String?
+  accountOwner         Boolean   @default(false)
+  locale               String?
+  collaborator         Boolean?  @default(false)
+  emailVerified        Boolean?  @default(false)
+  refreshToken         String?
+  refreshTokenExpires   DateTime?
+}
+
+// Shop-level delivery settings (single row per shop)
+model GlobalSettings {
+  id                    String   @id @default(cuid())
+  shop                  String   @unique
+  // Default cutoff time in shop timezone (e.g. "14:00" for 2pm)
+  defaultCutoffTime     String   @default("14:00")
+  // Default daily delivery capacity (orders per day)
+  defaultDailyCapacity  Int      @default(50)
+  // Default max days ahead a customer can select
+  defaultMaxDaysAhead   Int      @default(30)
+  // Allow deliveries on Saturday/Sunday
+  enableWeekendDelivery Boolean  @default(false)
+  // IANA timezone (e.g. "America/New_York")
+  timezone              String   @default("UTC")
+  // Show date picker on cart page (in addition to product)
+  showOnCartPage        Boolean  @default(false)
+  createdAt             DateTime @updatedAt
+  updatedAt             DateTime @updatedAt
+}
+
+// Blackout dates (no delivery); can be one-off or recurring annual
+model BlackoutDate {
+  id           String   @id @default(cuid())
+  shop         String
+  // Date in YYYY-MM-DD; for recurring, year is ignored (use month-day)
+  date         String
+  // If true, applies every year on this month-day (e.g. Dec 25)
+  recurring    Boolean  @default(false)
+  label        String?  // Optional label (e.g. "Christmas Day")
+  createdAt    DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
+
+  @@index([shop])
+  @@index([shop, date])
+}
+
+// Per-day delivery order count (updated by orders/create webhook for fast capacity checks)
+model DeliveryDayCount {
+  id    String   @id @default(cuid())
+  shop  String
+  date  String   // YYYY-MM-DD
+  count Int      @default(0)
+  @@unique([shop, date])
+  @@index([shop])
+}
+
+// Product-level delivery overrides (synced from product metafields via webhook or admin)
+model ProductDeliveryCache {
+  id            String   @id @default(cuid())
+  shop          String
+  productId     String
+  enabled       Boolean?
+  cutoffHours   Int?
+  maxDaysAhead  Int?
+  dailyCapacity Int?
+  updatedAt     DateTime @updatedAt
+  @@unique([shop, productId])
+  @@index([shop])
+}
+
+// Product add-ons shown under the date selector (e.g. "Additional meat pie"); price adds to total via linked variant
+model AddOn {
+  id         String   @id @default(cuid())
+  shop       String
+  name       String   // e.g. "Additional meat pie"
+  price      Float    // display price; actual price comes from the linked variant
+  variantId  String   // Shopify variant GID (gid://shopify/ProductVariant/xxx) - adding add-on adds this to cart
+  sortOrder  Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @updatedAt
+  updatedAt  DateTime @updatedAt
+
+  @@index([shop])
+}

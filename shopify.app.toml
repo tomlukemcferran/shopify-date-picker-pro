@@ -1,0 +1,50 @@
+# Delivery Date Pro - Shopify app configuration
+# Install via Shopify Partners; compatible with App Store distribution.
+
+name = "Delivery Date Pro"
+client_id = ""  # Set by Shopify CLI or Partners
+application_url = "https://your-app-url.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[access_scopes]
+scopes = "write_products,read_orders,write_orders,read_products"
+
+[auth]
+redirect_urls = [
+  "https://your-app-url.com/auth/callback",
+  "https://your-app-url.com/auth/shopify/callback",
+  "https://your-app-url.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+uri = "/webhooks/app/uninstalled"
+
+[[webhooks.subscriptions]]
+topics = ["app/scopes_update"]
+uri = "/webhooks/app/scopes_update"
+
+# Orders create: tag orders with Delivery-[YYYY-MM-DD] and Delivery-Date-Selected
+[[webhooks.subscriptions]]
+topics = ["orders/create"]
+uri = "/webhooks/orders/create"
+
+# Products update: sync product delivery metafields to cache for app proxy
+[[webhooks.subscriptions]]
+topics = ["products/update"]
+uri = "/webhooks/products/update"
+
+# App Proxy: storefront fetches available dates from this endpoint
+[app_proxy]
+url = "https://your-app-url.com/apps/delivery"
+subpath = "delivery"
+subpath_prefix = "apps"
+
+[pos]
+embedded = false

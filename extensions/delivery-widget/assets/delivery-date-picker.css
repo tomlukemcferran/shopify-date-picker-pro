@@ -1,0 +1,59 @@
+.delivery-date-pro {
+  margin: 1rem 0;
+}
+.delivery-date-pro__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.delivery-date-pro__input {
+  width: 100%;
+  max-width: 240px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.delivery-date-pro__input.flatpickr-input {
+  cursor: pointer;
+}
+.delivery-date-pro__error {
+  color: #c00;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+.delivery-date-pro__hint {
+  color: #666;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+.flatpickr-day.flatpickr-disabled {
+  color: #999 !important;
+  cursor: not-allowed;
+}
+
+.delivery-date-pro__addons {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e1e3e5;
+}
+.delivery-date-pro__addons-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.delivery-date-pro__addons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.delivery-date-pro__addon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+.delivery-date-pro__addon input {
+  margin: 0;
+}

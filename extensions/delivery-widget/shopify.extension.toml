@@ -1,0 +1,6 @@
+# Delivery Date Pro - Theme App Extension
+# Add the block to Product (or Cart) section in theme editor.
+
+api_version = "2024-10"
+type = "theme_app_extension"
+name = "Delivery Date Pro"

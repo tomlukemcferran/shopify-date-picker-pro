@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build
+build/
+dist/
+*.tsbuildinfo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# SQLite
+*.sqlite
+*.sqlite-journal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Shopify
+.shopify
+
+# Remix
+.cache/

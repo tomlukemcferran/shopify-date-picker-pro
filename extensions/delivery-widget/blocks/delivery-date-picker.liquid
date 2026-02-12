@@ -1,0 +1,89 @@
+{% comment %}
+  Delivery Date Pro - App block
+  Add to Product page (or Cart if enabled in app settings).
+  Preselects next available date; saves selection as line item property "Delivery Date".
+{% endcomment %}
+<div
+  class="delivery-date-pro"
+  {{ block.shopify_attributes }}
+  data-shop="{{ shop.permanent_domain }}"
+  data-product-id="{{ product.id | default: nil }}"
+  data-section-id="{{ section.id }}"
+>
+  <label for="delivery-date-pro-input" class="delivery-date-pro__label">
+    {{ block.settings.label }}
+  </label>
+  <input
+    type="text"
+    id="delivery-date-pro-input"
+    class="delivery-date-pro__input"
+    readonly
+    placeholder="{{ block.settings.placeholder }}"
+    data-proxy-prefix="/apps/delivery"
+  />
+  <p class="delivery-date-pro__error" id="delivery-date-pro-error" role="alert" hidden></p>
+  <p class="delivery-date-pro__hint">{{ block.settings.hint }}</p>
+
+  {% if block.settings.show_addons %}
+  <div class="delivery-date-pro__addons" id="delivery-date-pro-addons" data-proxy-prefix="/apps/delivery">
+    <span class="delivery-date-pro__addons-label">{{ block.settings.addons_label }}</span>
+    <div id="delivery-date-pro-addons-list" class="delivery-date-pro__addons-list"></div>
+  </div>
+  {% endif %}
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+
+{% schema %}
+{
+  "name": "Delivery date picker",
+  "javascript": "delivery-date-picker.js",
+  "stylesheet": "delivery-date-picker.css",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Delivery date"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder",
+      "default": "Select date"
+    },
+    {
+      "type": "text",
+      "id": "hint",
+      "label": "Hint text",
+      "default": "Choose your preferred delivery date."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_cart",
+      "label": "Show on Cart page",
+      "default": false,
+      "info": "Must be enabled in app settings for cart page to allow this block."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_addons",
+      "label": "Show product add-ons",
+      "default": true,
+      "info": "Add-ons are created in the app and add to the cart total when selected."
+    },
+    {
+      "type": "text",
+      "id": "addons_label",
+      "label": "Add-ons section label",
+      "default": "Add-ons"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Delivery date picker"
+    }
+  ]
+}
+{% endschema %}
