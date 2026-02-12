@@ -17,6 +17,8 @@ export default async function handleRequest(
   remixContext: EntryContext
 ) {
   addDocumentResponseHeaders(request, responseHeaders);
+  // Allow embedding in Shopify admin; avoid X-Frame-Options: deny (CSP frame-ancestors from Shopify lib controls framing)
+  responseHeaders.delete("X-Frame-Options");
   const userAgent = request.headers.get("user-agent");
   const callbackName = isbot(userAgent ?? "") ? "onAllReady" : "onShellReady";
 
